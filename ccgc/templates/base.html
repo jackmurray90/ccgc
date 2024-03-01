@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CCGC</title>
+  <style>
+    main {
+      max-width: 42em;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    .nav {
+      text-align: center;
+    }
+    .nav form {
+      display: inline-block;
+    }
+    .nav button {
+      background-color: transparent;
+      color: #00f;
+      border-style: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+  <main>
+    <h1>
+      Crypto Capital Gains Calculator
+    </h1>
+    {% if user.is_authenticated %}
+      <div class="nav">
+        Logged in as {{ user.username }}.
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Log Out</button>
+        </form>
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+
+</html>

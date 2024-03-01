@@ -1,0 +1,2 @@
+pydantic==2.6.3
+Django==5.0.2

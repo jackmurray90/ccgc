@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <p>
+    Welcome to the Crypto Capital Gains Calculator.
+  </p>
+  <p>
+    This site allows you to upload your trades and transactions then calculates
+    your capital gains.
+  <p>
+    At the moment, the site is in it's infancy. We only support CSV exports from
+    Coinbase, Coinspot, and Trezor.
+  </p>
+  <p>
+    For requests to support other exchanges, or to sign up, please email
+    jack@murray.software.
+  </p>
+  <p>
+    Existing users can log in by clicking <a href="{% url 'login' %}">here</a>.
+  </p>
+{% endblock %}
