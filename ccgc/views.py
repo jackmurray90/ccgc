@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
-from datetime import datetime
+from django.utils import timezone
 
 from ccgc.forms import UploadFileForm
 from ccgc.models import CsvFile
@@ -29,7 +29,7 @@ class UploadFileView(View):
                         user=request.user,
                         file=request.FILES['file'],
                         filename=request.FILES['file'].name,
-                        uploaded_at=datetime.now(),
+                        uploaded_at=timezone.now(),
                     )
             else:
                 messages.error(request, "No CSV file was selected.")
