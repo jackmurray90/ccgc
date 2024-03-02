@@ -17,12 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from ccgc.views import IndexView, UploadFileView, DeleteFileView
+from ccgc.views import IndexView, UploadFileView, DeleteFileView, CalculateView
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("upload", UploadFileView.as_view(), name="upload"),
     path("delete/<int:id>", DeleteFileView.as_view(), name="delete"),
+    path("calculate", CalculateView.as_view(), name="calculate"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
 ]

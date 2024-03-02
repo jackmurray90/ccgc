@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from ccgc.forms import UploadFileForm
 from ccgc.models import CsvFile
+from ccgc.engine import calculate
 
 class IndexView(View):
     def get(self, request):
@@ -36,3 +37,11 @@ class DeleteFileView(View):
         if request.user.is_authenticated:
             CsvFile.objects.filter(user=request.user, id=id).delete()
         return redirect("index")
+
+class CalculateView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("index")
+        files = [csv_file.file for csv_file in request.user.csv_files.all()]
+        result = calculate(files)
+        return render(request, "calculate.html", {"result": result})
