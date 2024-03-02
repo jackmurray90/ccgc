@@ -23,6 +23,7 @@
 {% endblock %}
 
 {% block content %}
+  <p><a href="{% url "index" %}">Back to file uploads</a></p>
 
   {% if result.unaccounted_for_funds %}
     <h2>Unaccounted for funds</h2>
