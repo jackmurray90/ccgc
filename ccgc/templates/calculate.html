@@ -19,6 +19,8 @@
       padding: 0.5em;
       text-align: center;
     }
+    .red { color: #f00; }
+    .green { color: #0a0; }
   </style>
 {% endblock %}
 
@@ -65,8 +67,8 @@
       {% for annual_summary in result.annual_summaries %}
         <tr>
           <td>{{ annual_summary.year }}</td>
-          <td>${{ annual_summary.profit|floatformat:2 }}</td>
-          <td>${{ annual_summary.discounted_profit|floatformat:2 }}</td>
+          <td class="{% if annual_summary.profit > 0 %}green{% else %}red{% endif %}">${{ annual_summary.profit|floatformat:2 }}</td>
+          <td class="{% if annual_summary.discounted_profit > 0 %}green{% else %}red{% endif %}">${{ annual_summary.discounted_profit|floatformat:2 }}</td>
         </tr>
       {% endfor %}
     </table>
@@ -121,7 +123,7 @@
           <td>${{ event.selling_rate|floatformat:2 }}</td>
           <td>{{ event.buying_timestamp }}</td>
           <td>{{ event.selling_timestamp }}</td>
-          <td>${{ event.profit|floatformat:2 }}</td>
+          <td class="{% if event.profit > 0 %}green{% else %}red{% endif %}">${{ event.profit|floatformat:2 }}</td>
           <td>{% if event.discount %}Discounted 50%{% else %}No discount{% endif %}</td>
         </tr>
       {% endfor %}
