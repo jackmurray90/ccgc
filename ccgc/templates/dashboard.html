@@ -2,8 +2,7 @@
 
 {% block head %}
   <style>
-    p {
-    }
+    table { margin: 0 0; }
     form > div {
       margin: 1em 0;
     }
@@ -50,17 +49,25 @@
       You have not uploaded any CSV files.
     </p>
   {% else %}
-    <ul class="files">
+    <table class="files">
+      <tr>
+        <th>Filename</th>
+        <th>Upload timestamp</th>
+        <th></th>
+      </tr>
       {% for csv_file in user.csv_files.all %}
-        <li>
-          {{ csv_file.filename }}
-          <form action="{% url "delete" csv_file.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit">(delete)</button>
-          </form>
-        </li>
+        <tr>
+          <td>{{ csv_file.filename }}</td>
+          <td>{{ csv_file.uploaded_at }}</td>
+          <td>
+            <form action="{% url "delete" csv_file.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit">(delete)</button>
+            </form>
+          </td>
+        </tr>
       {% endfor %}
-    </ul>
+    </table>
     <hr/>
     <p>Click <a href="{% url "calculate" %}">here</a> to calculate your capital gains.</p>
   {% endif %}
