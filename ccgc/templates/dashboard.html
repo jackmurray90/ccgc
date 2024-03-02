@@ -70,7 +70,7 @@
           <td>
             <form action="{% url "delete" csv_file.id %}" method="post">
               {% csrf_token %}
-              <button type="submit">(delete)</button>
+              <button type="submit">Delete</button>
             </form>
           </td>
         </tr>
