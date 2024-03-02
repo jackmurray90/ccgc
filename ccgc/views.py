@@ -24,6 +24,7 @@ class UploadFileView(View):
                 if request.FILES['file'].size > 10 * 1024 * 1024:
                     messages.error(request, "Maximum file size is 10 MB.")
                 else:
+                    messages.info(request, f"{request.FILES['file'].name} was uploaded.")
                     CsvFile.objects.create(
                         user=request.user,
                         file=request.FILES['file'],

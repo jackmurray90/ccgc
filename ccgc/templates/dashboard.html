@@ -21,6 +21,14 @@
       cursor: pointer;
     }
   </style>
+  <script>
+    window.addEventListener("load", (event) => {
+      document.getElementById("id_file").onchange = function() {
+        document.getElementById("form").submit();
+      };
+      document.getElementById("submit_button").remove();
+    });
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -35,10 +43,10 @@
     </div>
   {% endif %}
 
-  <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
+  <form id="form" action="{% url "upload" %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
-    <div><input type="submit" value="Upload CSV file"></div>
+    <div id="submit_button"><input type="submit" value="Upload CSV file"></div>
   </form>
 
   <hr/>
