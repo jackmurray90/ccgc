@@ -30,3 +30,9 @@ class UploadFileView(View):
             else:
                 messages.error(request, "No CSV file was selected.")
         return redirect("index")
+
+class DeleteFileView(View):
+    def post(self, request, id):
+        if request.user.is_authenticated:
+            CsvFile.objects.filter(user=request.user, id=id).delete()
+        return redirect("index")
