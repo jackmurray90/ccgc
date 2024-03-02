@@ -2,11 +2,104 @@
 
 {% block head %}
   <style>
+    main { max-width: 100%; }
+    h2 { text-align: center; }
+    pre {
+      max-width: 40em;
+      margin: 1em auto;
+      padding: 1em;
+      border: 1px solid #ccc;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 1em auto;
+    }
+    td, th {
+      border: 1px solid #ccc;
+      padding: 0.5em;
+      text-align: center;
+    }
   </style>
 {% endblock %}
 
 {% block content %}
 
-  Results here.
+  {% if result.unaccounted_for_funds %}
+    <h2>Unaccounted for funds</h2>
+    <table>
+      <tr>
+        <th>Asset</th>
+        <th>Amount</th>
+        <th>Selling date</th>
+        <th>Comment</th>
+      </tr>
+      {% for unaccounted_for_funds in result.unaccounted_for_funds %}
+        <tr>
+          <td>{{ unaccounted_for_funds.asset }}</td>
+          <td>{{ unaccounted_for_funds.asset_amount|floatformat:8 }}</td>
+          <td>{{ unaccounted_for_funds.timestamp }}</td>
+          <td>Claiming it was free at {{ unaccounted_for_funds.timestamp }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    <hr/>
+  {% endif %}
+
+  {% if result.adjustments %}
+    <h2>Adjustments for superannuation</h2>
+    <pre>Date,Type,BTC,AUD,Comment
+{% for adjustment in result.adjustments %}{{ adjustment.timestamp.day }}/{{ adjustment.timestamp.month }}/{{ adjustment.timestamp.year }},{{ adjustment.type }},{{ adjustment.asset_amount|floatformat:8 }},{{ adjustment.aud_amount|floatformat:2 }},{{ adjustment.comment }}
+{% endfor %}</pre>
+    <hr/>
+  {% endif %}
+
+  {% if result.annual_summaries %}
+    <h2>Annual capital gains summary</h2>
+    <table>
+      <tr>
+        <th>Year</th>
+        <th>Profit</th>
+        <th>Profit (with discounts)</th>
+      </tr>
+      {% for annual_summary in result.annual_summaries %}
+        <tr>
+          <td>{{ annual_summary.year }}</td>
+          <td>${{ annual_summary.profit|floatformat:2 }}</td>
+          <td>${{ annual_summary.discounted_profit|floatformat:2 }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    <hr/>
+  {% endif %}
+
+  {% if result.events %}
+    <h2>Breakdown of taxable events</h2>
+    <table>
+      <tr>
+        <th>Asset</th>
+        <th>Amount</th>
+        <th>Buying price</th>
+        <th>Selling price</th>
+        <th>Buying date</th>
+        <th>Selling date</th>
+        <th>Profit</th>
+        <th>Discount</th>
+      </tr>
+      {% for event in result.events %}
+        <tr>
+          <td>{{ event.asset }}</td>
+          <td>{{ event.amount|floatformat:8 }}</td>
+          <td>${{ event.buying_rate|floatformat:2 }}</td>
+          <td>${{ event.selling_rate|floatformat:2 }}</td>
+          <td>{{ event.buying_timestamp }}</td>
+          <td>{{ event.selling_timestamp }}</td>
+          <td>${{ event.profit|floatformat:2 }}</td>
+          <td>{% if event.discount %}Discounted 50%{% else %}No discount{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+
+  All total profit: {{ result.all_total_profit }}
 
 {% endblock %}

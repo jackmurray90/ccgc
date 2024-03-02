@@ -1,2 +1,1 @@
-def calculate(files):
-    return []
+from ccgc.engine.main import calculate

@@ -42,6 +42,5 @@ class CalculateView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect("index")
-        files = [csv_file.file for csv_file in request.user.csv_files.all()]
-        result = calculate(files)
+        result = calculate(request.user.csv_files.all())
         return render(request, "calculate.html", {"result": result})
