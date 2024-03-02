@@ -9,7 +9,7 @@ from ccgc.engine.coinbase import Coinbase
 from ccgc.engine.binance import Binance
 from ccgc.engine.trezor import Trezor
 from ccgc.engine.adjustments import Adjustments
-from ccgc.engine.models import TaxableEvent, Type, SuperTransfer, ParseFileResult, CalculationResult, EventResult, Adjustment, UnaccountedForFunds, AnnualSummary
+from ccgc.engine.models import TaxableEvent, Type, SuperTransfer, ParseFileResult, CalculationResult, EventResult, Adjustment, UnaccountedForFunds, AnnualSummary, RemainingBalance
 
 def calculate(csv_files):
     australian_tax_year = True
@@ -45,6 +45,7 @@ def calculate(csv_files):
 
     total_profit = defaultdict(lambda: 0)
     total_discounted_profit = defaultdict(lambda: 0)
+    remaining_buys = defaultdict(lambda: [])
 
     for asset in events:
         events[asset].sort(key=lambda x: x.timestamp)
@@ -192,6 +193,7 @@ def calculate(csv_files):
                     if discount:
                         profit /= 2
                     total_discounted_profit[tax_year] += profit
+        remaining_buys[asset] = buys
 
     for year in sorted(total_profit.keys()):
         result.annual_summaries.append(
@@ -202,48 +204,17 @@ def calculate(csv_files):
             ),
         )
 
+    for asset in remaining_buys:
+        result.remaining_balances.append(
+            RemainingBalance(
+                asset=asset,
+                asset_amount=sum([buy.asset_amount for buy in remaining_buys[asset]]),
+                aud_amount=sum([buy.aud_amount for buy in remaining_buys[asset]]),
+            ),
+        )
+
     return result
 
-    if adjustments:
-        print()
-        print("Adjustments for superannuation:")
-        print()
-        print("Date,Type,BTC,AUD,Comment")
-        for timestamp, type, btc, aud, comment in adjustments:
-            print(
-                f"{timestamp.day}/{timestamp.month}/{timestamp.year},{type},{round(btc, 8)},{aud},{comment}"
-            )
-
-    print()
-    for year in sorted(total_profit.keys()):
-        print(
-            "Total Gapital Gains for year starting",
-            "Jul" if australian_tax_year else "Jan",
-            year,
-            "is               ",
-            total_profit[year],
-        )
-        print(
-            "Total Gapital Gains for year starting",
-            "Jul" if australian_tax_year else "Jan",
-            year,
-            "with discounts is",
-            total_discounted_profit[year],
-        )
-    print()
-
-    remaining_btc = sum([buy.asset_amount for buy in buys])
-    remaining_spent = sum([buy.aud_amount for buy in buys])
-    print(
-        "Total remaining btc is",
-        round(remaining_btc, 8),
-        "( $",
-        round(remaining_btc * current_rate, 2),
-        ", acquired for $",
-        round(remaining_spent, 2),
-        ")",
-    )
-    print()
     print(
         "Total all-time profit if you sold everything now:",
         round(remaining_btc * current_rate - remaining_spent + all_total_profit, 2),

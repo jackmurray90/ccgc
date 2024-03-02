@@ -57,6 +57,11 @@ class AnnualSummary(BaseModel):
     profit: Decimal
     discounted_profit: Decimal
 
+class RemainingBalance(BaseModel):
+    asset: str
+    asset_amount: Decimal
+    aud_amount: Decimal
+
 class CalculationResult(BaseModel):
     files: List[ParseFileResult] = []
     events: List[EventResult] = []
@@ -64,3 +69,4 @@ class CalculationResult(BaseModel):
     all_total_profit: int = 0
     annual_summaries: List[AnnualSummary] = []
     adjustments: List[Adjustment] = []
+    remaining_balances: List[RemainingBalance] = []

@@ -3,7 +3,7 @@
 {% block head %}
   <style>
     main { max-width: 100%; }
-    h2 { text-align: center; }
+    h2, p { text-align: center; }
     pre {
       max-width: 40em;
       margin: 1em auto;
@@ -69,6 +69,26 @@
         </tr>
       {% endfor %}
     </table>
+    <p>All total profit: ${{ result.all_total_profit|floatformat:2 }}</p>
+    <hr/>
+  {% endif %}
+
+  {% if result.remaining_balances %}
+    <h2>Remaining balances</h2>
+    <table>
+      <tr>
+        <th>Asset</th>
+        <th>Asset amount</th>
+        <th>Amount spent to purchase</th>
+      </tr>
+      {% for remaining_balance in result.remaining_balances %}
+        <tr>
+          <td>{{ remaining_balance.asset }}</td>
+          <td>{{ remaining_balance.asset_amount|floatformat:8 }}</td>
+          <td>${{ remaining_balance.aud_amount|floatformat:2 }}</td>
+        </tr>
+      {% endfor %}
+    </table>
     <hr/>
   {% endif %}
 
@@ -98,8 +118,7 @@
         </tr>
       {% endfor %}
     </table>
+    <hr/>
   {% endif %}
-
-  All total profit: {{ result.all_total_profit }}
 
 {% endblock %}
