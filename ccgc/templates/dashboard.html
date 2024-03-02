@@ -26,7 +26,6 @@
       document.getElementById("id_files").onchange = function() {
         document.getElementById("form").submit();
       };
-      document.getElementById("submit_button").remove();
     });
   </script>
 {% endblock %}
@@ -46,7 +45,7 @@
   <form id="form" action="{% url "upload" %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
-    <div id="submit_button"><input type="submit" value="Upload CSV files"></div>
+    <noscript><div id="submit_button"><input type="submit" value="Upload CSV files"></div></noscript>
   </form>
 
   <hr/>
