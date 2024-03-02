@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
 from ccgc.views import IndexView, UploadFileView, DeleteFileView, CalculateView
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
     path("upload", UploadFileView.as_view(), name="upload"),
     path("delete/<int:id>", DeleteFileView.as_view(), name="delete"),
     path("calculate", CalculateView.as_view(), name="calculate"),
+    path("accounts/password_change/done/", RedirectView.as_view(url="/", permanent=False)),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
 ]
