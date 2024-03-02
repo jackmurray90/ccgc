@@ -21,16 +21,20 @@ class UploadFileView(View):
         if request.user.is_authenticated:
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
-                if request.FILES['file'].size > 10 * 1024 * 1024:
-                    messages.error(request, "Maximum file size is 10 MB.")
+                for file in form.cleaned_data["files"]:
+                    if file.size > 10 * 1024 * 1024:
+                        messages.error(request, "Maximum file size is 10 MB.")
+                        break
                 else:
-                    messages.info(request, f"{request.FILES['file'].name} was uploaded.")
-                    CsvFile.objects.create(
-                        user=request.user,
-                        file=request.FILES['file'],
-                        filename=request.FILES['file'].name,
-                        uploaded_at=timezone.now(),
-                    )
+                    for file in form.cleaned_data["files"]:
+                        CsvFile.objects.create(
+                            user=request.user,
+                            file=file,
+                            filename=file.name,
+                            uploaded_at=timezone.now(),
+                        )
+                    count = len(form.cleaned_data['files'])
+                    messages.info(request, "1 file was uploaded" if count == 1 else f"{count} files were uploaded.")
             else:
                 messages.error(request, "No CSV file was selected.")
         return redirect("index")
