@@ -70,3 +70,4 @@ class CalculationResult(BaseModel):
     annual_summaries: List[AnnualSummary] = []
     adjustments: List[Adjustment] = []
     remaining_balances: List[RemainingBalance] = []
+    next_super_payment: str = None

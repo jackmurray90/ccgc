@@ -213,32 +213,18 @@ def calculate(csv_files):
             ),
         )
 
-    return result
-
-    print(
-        "Total all-time profit if you sold everything now:",
-        round(remaining_btc * current_rate - remaining_spent + all_total_profit, 2),
-    )
-    print()
-    if buys:
-        print(
-            "Next discount date", buys[0].timestamp.replace(year=buys[0].timestamp.year + 1)
-        )
-        print()
-
-    print("Next super monthly payment would look like this in adjustments.csv:")
-    print()
     total_super_btc = 0
     while super_monthly_payment > 0:
-        if buys[-1].aud_amount >= super_monthly_payment:
-            fraction = super_monthly_payment / buys[-1].aud_amount
-            total_super_btc += buys[-1].asset_amount * fraction
+        if not remaining_buys["BTC"]:
+            break
+        if remaining_buys["BTC"][-1].aud_amount >= super_monthly_payment:
+            fraction = super_monthly_payment / remaining_buys["BTC"][-1].aud_amount
+            total_super_btc += remaining_buys["BTC"][-1].asset_amount * fraction
             break
         else:
-            total_super_btc += buys[-1].asset_amount
-            super_monthly_payment -= buys[-1].aud_amount
-            buys = buys[:-1]
-    print(
-        f"{datetime.now().strftime('%d/%m/%Y')},Super,{round(total_super_btc, 8)},,Transfer to superannuation"
-    )
-    print()
+            total_super_btc += remaining_buys["BTC"][-1].asset_amount
+            super_monthly_payment -= remaining_buys["BTC"][-1].aud_amount
+            remaining_buys["BTC"] = remaining_buys["BTC"][:-1]
+    result.next_super_payment = f"{datetime.now().strftime('%d/%m/%Y')},super,{round(total_super_btc, 8)},,Transfer to superannuation"
+
+    return result

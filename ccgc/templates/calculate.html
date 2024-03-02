@@ -92,6 +92,13 @@
     <hr/>
   {% endif %}
 
+  {% if user.is_staff and result.next_super_payment %}
+    <h2>Next super payment</h2>
+    <p>Add this to adjustments.csv:</p>
+    <pre>{{ result.next_super_payment }}</pre>
+    <hr/>
+  {% endif %}
+
   {% if result.events %}
     <h2>Breakdown of taxable events</h2>
     <table>
