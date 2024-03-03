@@ -18,6 +18,27 @@
 {% block content %}
   <p><a href="{% url "index" %}">Back to file uploads</a></p>
 
+  {% if result.files %}
+    <h2>File analysis results</h2>
+    <table>
+      <tr>
+        <th>Filename</th>
+        <th>Result</th>
+      </tr>
+      {% for file in result.files %}
+        <tr>
+          <td>{{ file.filename }}</td>
+          {% if file.parsed %}
+            <td class="green">Analysed</td>
+          {% else %}
+            <td class="red">Unknown file format</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </table>
+    <hr/>
+  {% endif %}
+
   {% if result.unaccounted_for_funds %}
     <h2>Unaccounted for funds</h2>
     <table>
