@@ -17,7 +17,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from ccgc.views import IndexView, UploadFileView, DeleteFileView, CalculateView, PasswordChangeRedirectView
+from ccgc.views import (
+    IndexView,
+    UploadFileView,
+    DeleteFileView,
+    CalculateView,
+    PasswordChangeRedirectView,
+)
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),

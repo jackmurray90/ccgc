@@ -7,14 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ccgc', '0003_alter_csvfile_file'),
+        ("ccgc", "0003_alter_csvfile_file"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='csvfile',
-            name='uploaded_at',
-            field=models.DateTimeField(default=datetime.datetime(2024, 3, 2, 21, 51, 47, 283494, tzinfo=datetime.timezone.utc)),
+            model_name="csvfile",
+            name="uploaded_at",
+            field=models.DateTimeField(
+                default=datetime.datetime(
+                    2024, 3, 2, 21, 51, 47, 283494, tzinfo=datetime.timezone.utc
+                )
+            ),
             preserve_default=False,
         ),
     ]

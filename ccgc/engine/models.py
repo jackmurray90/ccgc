@@ -29,6 +29,7 @@ class ParseFileResult(BaseModel):
     filename: str
     parsed: bool
 
+
 class EventResult(BaseModel):
     profit: Decimal
     amount: Decimal
@@ -47,20 +48,24 @@ class Adjustment(BaseModel):
     aud_amount: Decimal
     comment: str
 
+
 class UnaccountedForFunds(BaseModel):
     timestamp: datetime
     asset: str
     asset_amount: Decimal
+
 
 class AnnualSummary(BaseModel):
     year: str
     profit: Decimal
     discounted_profit: Decimal
 
+
 class RemainingBalance(BaseModel):
     asset: str
     asset_amount: Decimal
     aud_amount: Decimal
+
 
 class CalculationResult(BaseModel):
     files: List[ParseFileResult] = []

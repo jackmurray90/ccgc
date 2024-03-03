@@ -7,6 +7,7 @@ from ccgc.forms import UploadFileForm
 from ccgc.models import CsvFile
 from ccgc.engine import calculate
 
+
 class IndexView(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -39,17 +40,26 @@ class UploadFileView(View):
                             filename=file.name,
                             uploaded_at=timezone.now(),
                         )
-                    count = len(form.cleaned_data['files'])
-                    messages.info(request, "1 file was uploaded" if count == 1 else f"{count} files were uploaded.")
+                    count = len(form.cleaned_data["files"])
+                    messages.info(
+                        request,
+                        (
+                            "1 file was uploaded"
+                            if count == 1
+                            else f"{count} files were uploaded."
+                        ),
+                    )
             else:
                 messages.error(request, "No CSV file was selected.")
         return redirect("index")
+
 
 class DeleteFileView(View):
     def post(self, request, id):
         if request.user.is_authenticated:
             CsvFile.objects.filter(user=request.user, id=id).delete()
         return redirect("index")
+
 
 class CalculateView(View):
     def get(self, request):

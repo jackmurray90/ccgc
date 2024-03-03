@@ -9,7 +9,19 @@ from ccgc.engine.coinbase import Coinbase
 from ccgc.engine.binance import Binance
 from ccgc.engine.trezor import Trezor
 from ccgc.engine.adjustments import Adjustments
-from ccgc.engine.models import TaxableEvent, Type, SuperTransfer, ParseFileResult, CalculationResult, EventResult, Adjustment, UnaccountedForFunds, AnnualSummary, RemainingBalance
+from ccgc.engine.models import (
+    TaxableEvent,
+    Type,
+    SuperTransfer,
+    ParseFileResult,
+    CalculationResult,
+    EventResult,
+    Adjustment,
+    UnaccountedForFunds,
+    AnnualSummary,
+    RemainingBalance,
+)
+
 
 def calculate(csv_files):
     australian_tax_year = True
@@ -36,12 +48,16 @@ def calculate(csv_files):
                 try:
                     for event in exchange.load_events(path):
                         events[event.asset].append(event)
-                    result.files.append(ParseFileResult(filename=csv_file.filename, parsed=True))
+                    result.files.append(
+                        ParseFileResult(filename=csv_file.filename, parsed=True)
+                    )
                     break
                 except:
                     pass
         else:
-            result.files.append(ParseFileResult(filename=csv_file.filename, parsed=False))
+            result.files.append(
+                ParseFileResult(filename=csv_file.filename, parsed=False)
+            )
 
     total_profit = defaultdict(lambda: 0)
     total_discounted_profit = defaultdict(lambda: 0)
@@ -68,7 +84,7 @@ def calculate(csv_files):
                                 type=Type.buy,
                                 asset_amount=buys[-1].asset_amount,
                                 aud_amount=buys[-1].aud_amount,
-                                comment='Buy on Coinspot',
+                                comment="Buy on Coinspot",
                             ),
                         )
                         event.asset_amount -= buys[-1].asset_amount
@@ -81,7 +97,7 @@ def calculate(csv_files):
                                 type=Type.buy,
                                 asset_amount=event.asset_amount,
                                 aud_amount=buys[-1].aud_amount * fraction,
-                                comment='Buy on Coinspot',
+                                comment="Buy on Coinspot",
                             ),
                         )
                         buys[-1] = TaxableEvent(

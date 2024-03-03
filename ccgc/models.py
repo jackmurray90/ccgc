@@ -10,6 +10,7 @@ class CsvFile(models.Model):
     filename = models.CharField(max_length=500)
     uploaded_at = models.DateTimeField()
 
+
 @receiver(models.signals.post_delete, sender=CsvFile)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     if instance.file:
