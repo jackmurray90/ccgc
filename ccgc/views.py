@@ -16,6 +16,12 @@ class IndexView(View):
             return render(request, "landing_page.html")
 
 
+class PasswordChangeRedirectView(View):
+    def get(self, request):
+        messages.info(request, "Your password was successfully changed.")
+        return redirect("index")
+
+
 class UploadFileView(View):
     def post(self, request):
         if request.user.is_authenticated:

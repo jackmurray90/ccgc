@@ -32,15 +32,17 @@
 
 {% block content %}
 
-  <h2>Upload a CSV file</h2>
-
   {% if messages %}
     <div class="messages">
         {% for message in messages %}
-        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
         {% endfor %}
     </div>
+    <hr/>
   {% endif %}
+
+
+  <h2>Upload a CSV file</h2>
 
   <form id="form" action="{% url "upload" %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
