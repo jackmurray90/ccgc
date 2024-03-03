@@ -134,7 +134,7 @@ def calculate(csv_files):
                 selling_rate = event.aud_amount / event.asset_amount
                 while event.asset_amount > 0:
                     if len(buys) == 0:
-                        if aud_amount < 0.01:
+                        if event.aud_amount < 0.01:
                             break
                         result.unaccounted_for_funds.append(
                             UnaccountedForFunds(
