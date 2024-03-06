@@ -109,6 +109,9 @@ def calculate(csv_files):
                         )
                         event.asset_amount = 0
             elif event.type == Type.transfer:
+                result.all_total_profit -= event.aud_amount
+                total_profit[tax_year] -= event.aud_amount
+                total_discounted_profit[tax_year] -= event.aud_amount
                 while event.asset_amount > 0:
                     if len(buys) == 0:
                         result.unaccounted_for_funds.append(
@@ -128,7 +131,6 @@ def calculate(csv_files):
                             )
                         ]
                     if buys[0].asset_amount <= event.asset_amount:
-                        event.aud_amount *= (1 - buys[0].asset_amount / event.asset_amount)
                         event.asset_amount -= buys[0].asset_amount
                         buys = buys[1:]
                     else:
