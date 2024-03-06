@@ -88,5 +88,14 @@ class Binance:
                     aud_amount=row.aud_amount / row.asset_amount * Decimal(0.0001),
                 )
             )
+            transfer_fees.append(
+                TaxableEvent(
+                    timestamp=row.timestamp,
+                    asset="BTC",
+                    type=Type.transfer_fee,
+                    asset_amount=0.0001,
+                    aud_amount=row.aud_amount / row.asset_amount * Decimal(0.0001),
+                )
+            )
 
         return result + transfer_fees

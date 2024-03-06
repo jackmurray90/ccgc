@@ -113,7 +113,16 @@ class CoinspotSendsReceives:
                         TaxableEvent(
                             timestamp=timestamp,
                             asset=row["Coin"],
-                            type=Type.transfer,
+                            type=Type.sell,
+                            asset_amount=btc,
+                            aud_amount=aud,
+                        )
+                    )
+                    result.append(
+                        TaxableEvent(
+                            timestamp=timestamp,
+                            asset=row["Coin"],
+                            type=Type.transfer_fee,
                             asset_amount=btc,
                             aud_amount=aud,
                         )

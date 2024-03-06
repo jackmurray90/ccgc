@@ -108,42 +108,10 @@ def calculate(csv_files):
                             aud_amount=buys[-1].aud_amount * (1 - fraction),
                         )
                         event.asset_amount = 0
-            elif event.type == Type.transfer:
+            elif event.type == Type.transfer_fee:
                 result.all_total_profit -= event.aud_amount
                 total_profit[tax_year] -= event.aud_amount
                 total_discounted_profit[tax_year] -= event.aud_amount
-                while event.asset_amount > 0:
-                    if len(buys) == 0:
-                        result.unaccounted_for_funds.append(
-                            UnaccountedForFunds(
-                                timestamp=event.timestamp,
-                                asset=asset,
-                                asset_amount=event.asset_amount,
-                            ),
-                        )
-                        buys = [
-                            TaxableEvent(
-                                timestamp=event.timestamp,
-                                asset=asset,
-                                type=Type.buy,
-                                asset_amount=event.asset_amount,
-                                aud_amount=0,
-                            )
-                        ]
-                    if buys[0].asset_amount <= event.asset_amount:
-                        event.asset_amount -= buys[0].asset_amount
-                        buys = buys[1:]
-                    else:
-                        fraction = event.asset_amount / buys[0].asset_amount
-                        buys[0] = TaxableEvent(
-                            timestamp=buys[0].timestamp,
-                            asset=asset,
-                            type=Type.buy,
-                            asset_amount=buys[0].asset_amount - event.asset_amount,
-                            aud_amount=buys[0].aud_amount * (1 - fraction),
-                        )
-                        event.asset_amount = 0
-                        event.aud_amount = 0
             elif event.type == Type.buy:
                 buys.append(event)
             else:

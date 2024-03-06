@@ -48,7 +48,16 @@ class Trezor:
                         TaxableEvent(
                             timestamp=timestamp,
                             asset="BTC",
-                            type=Type.transfer,
+                            type=Type.sell,
+                            asset_amount=btc,
+                            aud_amount=aud,
+                        )
+                    )
+                    result.append(
+                        TaxableEvent(
+                            timestamp=timestamp,
+                            asset="BTC",
+                            type=Type.transfer_fee,
                             asset_amount=btc,
                             aud_amount=aud,
                         )
